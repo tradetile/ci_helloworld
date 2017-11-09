@@ -24,6 +24,9 @@
 
 #include <producer.h>
 #include <consumer.h>
+#include <math.h>
+
+void computeStats (int numbers[], int length);
 
 int
 MAIN(int argc, char *argv[])
@@ -34,5 +37,41 @@ MAIN(int argc, char *argv[])
     producer p{};
     consumer c{&p};
 
+    // test dynamic.
+    int numbers[] = {1,2,4};
+    computeStats(numbers, 3);
+    computeStats(numbers, 1);
+    computeStats(numbers, 0);
+
     return 0;
+}
+
+/**
+* Example Data Flow - Stats
+*/
+void computeStats (int numbers[], int length)
+{
+    //int length = numbers.length;
+    double med, var, sd, mean, sum, varsum;    
+    sum = 0.0;
+    for (int i = 0; i < length; i++)
+    {
+        sum += numbers [ i ];
+    }
+    med = numbers [length / 2 ]; 
+    mean = sum / (double) length;
+    varsum = 0.0;
+    for (int i = 0; i < length; i++)
+    {
+        varsum = varsum + ((numbers [ i ] - mean) * (numbers [ i ] - mean));
+    }
+    var = varsum / ( length - 1 ); 
+    sd = sqrt ( var );
+
+    printf("length: %d \n", length);
+    printf("mean: %f \n", mean);
+    printf("median: %f \n", med);
+    printf("variance: %f \n", var);
+    printf("standard deviation: %f \n", sd);
+    return;
 }
